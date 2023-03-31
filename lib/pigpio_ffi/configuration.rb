@@ -1,6 +1,6 @@
 module PiGPIO
-	extend FFI::Library
-	ffi_lib 'pigpio'
+  extend FFI::Library
+  ffi_lib 'pigpio'
 
   #
   # GPIO callbacks do not trigger immediately.
@@ -18,7 +18,7 @@ module PiGPIO
   # NOTE: Must be called before #gpioInitialise.
   #
   # Args: microseconds, peripheral (0=PWM, 1=PCM), source (deprecated, give 0)
-	attach_function :gpioCfgClock, [:uint, :uint, :uint], :int
+  attach_function :gpioCfgClock, [:uint, :uint, :uint], :int
 
   # gpioCfgDMAchannel is deprecated.
 

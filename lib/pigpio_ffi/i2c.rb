@@ -1,19 +1,19 @@
 module PiGPIO
-	extend FFI::Library
-	ffi_lib 'pigpio'
+  extend FFI::Library
+  ffi_lib 'pigpio'
 
   #
   # Open a handle for I2C device at specified address (0-127).
   # 
-	# Args:    i2cBus, i2cAddr, i2cFlags (set to 0)
+  # Args:    i2cBus, i2cAddr, i2cFlags (set to 0)
   # Returns: handle as integer
-	attach_function :i2cOpen, [:uint, :uint, :uint], :int
+  attach_function :i2cOpen, [:uint, :uint, :uint], :int
 
   #
   # Close an I2C device handle.
   # 
-	# Args: handle
-	attach_function :i2cClose, [:uint], :int
+  # Args: handle
+  attach_function :i2cClose, [:uint], :int
 
   # i2cWriteQuick not mapped.
 
@@ -34,8 +34,8 @@ module PiGPIO
 
   # 
   # Read up to 32 bytes from a given I2C address (as handle), and start register.
-	#
-	# Don't call this directly.
+  #
+  # Don't call this directly.
   attach_function :_i2cReadI2CBlockData, :i2cReadI2CBlockData, [:uint, :uint, :pointer], :int
   #
   # Call this instead.
@@ -51,7 +51,7 @@ module PiGPIO
   # 
   # Write up to 32 bytes to a given I2C address (as handle), and start register.
   #
-	# Don't call this directly.
+  # Don't call this directly.
   attach_function :_i2cWriteI2CBlockData, :i2cWriteI2CBlockData, [:uint, :uint, :pointer], :int
   #
   # Call this instead.

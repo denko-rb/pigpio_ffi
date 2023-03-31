@@ -25,8 +25,8 @@ require_relative 'pigpio_ffi/configuration'
 # Additional convenience and helper methods added here.
 # 
 module PiGPIO
-	extend FFI::Library
-	ffi_lib 'pigpio'
+  extend FFI::Library
+  ffi_lib 'pigpio'
 
   # Helper to handle systick integer rollover calculation.
   def self.gpioTicksSince(old_time)

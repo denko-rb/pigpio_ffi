@@ -1,32 +1,32 @@
 module PiGPIO
-	extend FFI::Library
-	ffi_lib 'pigpio'
+  extend FFI::Library
+  ffi_lib 'pigpio'
 
-	#
+  #
   # Open a handle for SPI device on the bus
   # 
-	# Args: spiChan, baud, spiFlags (see pigpio docs)
-	# 			spiFlags control mode, chip select, LSB/MSB etc.
-	#		
+  # Args: spiChan, baud, spiFlags (see pigpio docs)
+  #       spiFlags control mode, chip select, LSB/MSB etc.
+  #    
   # Returns: handle as integer
-	attach_function :spiOpen, [:uint, :uint32, :uint32], :int
+  attach_function :spiOpen, [:uint, :uint32, :uint32], :int
 
-	#
+  #
   # Close an SPI device handle.
   # 
-	# Args: handle
-	attach_function :i2cClose, [:uint], :int
+  # Args: handle
+  attach_function :i2cClose, [:uint], :int
 
   # 
   # Read length bytes from the given SPI handle.
-	#
-	# Don't call this directly.
-	# Args: handle, buffer, count
+  #
+  # Don't call this directly.
+  # Args: handle, buffer, count
   attach_function :_spiRead, :spiRead, [:uint, :pointer, :uint], :int
   #
   # Call this instead.
   def self.spiRead(handle, length)
-		# Limited to word sizes of 8 bits.
+    # Limited to word sizes of 8 bits.
     buffer_pointer = FFI::MemoryPointer.new(:uint8, length)
 
     # Read it and convert it to a Ruby array.
@@ -37,12 +37,12 @@ module PiGPIO
   # 
   # Write bytes to the given SPI handle.
   #
-	# Don't call this directly.
+  # Don't call this directly.
   attach_function :_spiWrite, :spiWrite, [:uint, :pointer, :uint], :int
   #
   # Call this instead.
   def self.spiWrite(handle, byte_array)
-		# Do some validation.
+    # Do some validation.
     byte_array.each do |element|
       raise ArgumentError, "Byte values must be within 0x00 and 0xFF" if (element > 0xFF || element < 0x00)
     end
@@ -55,33 +55,33 @@ module PiGPIO
     self._spiWrite(handle, buffer_pointer, buffer_pointer.length)
   end
 
-	# 
+  # 
   # Xfer bytes from the SPI handle. Reads as many bytes as the legnth of the tx_buffer.
   #
-	# Don't call this directly.
+  # Don't call this directly.
   attach_function :_spiXfer, :spiXfer, [:uint, :pointer, :pointer, :uint], :int
   #
   # Call this instead.
   def self.spiXfer(handle, tx_array)
-		tx_array.each do |element|
-			raise ArgumentError, "Byte values must be within 0x00 and 0xFF" if (element > 0xFF || element < 0x00)
-		end
+    tx_array.each do |element|
+      raise ArgumentError, "Byte values must be within 0x00 and 0xFF" if (element > 0xFF || element < 0x00)
+    end
 
-		# Copy the tx array to the pointer location.
-		tx_pointer = FFI::MemoryPointer.new(:uint8, tx_array.length)
+    # Copy the tx array to the pointer location.
+    tx_pointer = FFI::MemoryPointer.new(:uint8, tx_array.length)
     tx_pointer.write_array_of_type(:uint8, tx_array)
 
-		# Make pointer for the receive buffer.
-		rx_pointer = FFI::MemoryPointer.new(:uint8, tx_array.length)
+    # Make pointer for the receive buffer.
+    rx_pointer = FFI::MemoryPointer.new(:uint8, tx_array.length)
 
-		# Transfer.
-		self._spiWrite(handle, buffer_pointer, buffer_pointer.length)
+    # Transfer.
+    self._spiWrite(handle, buffer_pointer, buffer_pointer.length)
 
     # Read bytes from the rx pointer.
     rx_bytes = rx_pointer.read_array_of_type(:uint8, tx_array.length)
   end
 
-	# bbSPIOpen  not mapped.
-	# bbSPIClose not mapped.
-	# bbSPIXfer  not mapped.
+  # bbSPIOpen  not mapped.
+  # bbSPIClose not mapped.
+  # bbSPIXfer  not mapped.
 end
