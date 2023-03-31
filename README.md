@@ -1,6 +1,6 @@
 # pigpio_ffi 0.1.0
 
-This gem uses [FFI](https://github.com/ffi/ffi) to provide Ruby method bindings for the [pigpio](https://abyz.me.uk/rpi/pigpio/index.html) C library. This makes the GPIO pins of the Rasperry Pi single-board-computers usable in Ruby.
+This gem uses [FFI](https://github.com/ffi/ffi) to provide Ruby method bindings for the [pigpio](https://abyz.me.uk/rpi/pigpio/index.html) C library. This makes the Raspberry Pi GPIO pins usable in Ruby.
 
 NOTE: This is for Ruby on Linux, not for the Raspberry Pi Pico (W).
 
