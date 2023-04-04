@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.description = "Use your Raspberry Pi GPIO pins in Ruby. This gem uses FFI to provide Ruby bindings for the pigpio C library on compatible Raspberry Pi Devices."
   s.authors     = ["vickash"]
   s.email       = 'vickashmahabir@gmail.com'
-  s.files       =  Dir['**/*']
+  s.files       =  Dir['**/*'].reject { |f| f.match /.gem\z/}
   s.homepage    = 'https://github.com/dino-rb/pigpio_ffi'
   s.metadata    = { "source_code_uri" => "https://github.com/dino-rb/pigpio_ffi" }
 
